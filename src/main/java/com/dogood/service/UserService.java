@@ -1,5 +1,5 @@
 package com.dogood.service;
-
+import com.dogood.dto.LoginRequest;
 import com.dogood.model.User;
 import com.dogood.repository.UserRepository;
 
@@ -18,5 +18,18 @@ public class UserService {
         System.out.println("Registering user: " + user);
         return userRepository.save(user);
     }
-
+    
+    public User loginUser(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail());
+        
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+        
+        return user;
+    }
 }
