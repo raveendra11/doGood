@@ -19,10 +19,19 @@ public class User {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Enumerated(EnumType.STRING)
     private Role role;
 
     public enum Role {
         DONOR, ADMIN, BENEFICIARY
     }
+
 }
