@@ -1,0 +1,9 @@
+com\dogood\DoGoodApplication.class
+com\dogood\dto\RegisterRequest.class
+com\dogood\repository\UserRepository.class
+com\dogood\config\WebConfig.class
+com\dogood\model\User$Role.class
+com\dogood\controller\UserController.class
+com\dogood\model\User.class
+com\dogood\service\UserService.class
+com\dogood\dto\LoginRequest.class
