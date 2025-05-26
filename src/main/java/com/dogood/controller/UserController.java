@@ -13,6 +13,11 @@ public class UserController {
     @Autowired
     private UserService userService;
     
+    @GetMapping("/message")
+    public String message() {
+    	return "Just, doGood!";
+    }
+    
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         return userService.registerUser(user);
