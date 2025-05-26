@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/users';
+const API_URL = 'https://my-springboot-service-482150591633.us-central1.run.app/api/users';
 
 export const registerUser = async (userData) => {
   return await axios.post(`${API_URL}/register`, userData);
