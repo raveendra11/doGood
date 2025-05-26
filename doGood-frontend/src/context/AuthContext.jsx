@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/users/login', { email, password });
+      const response = await axios.post('https://my-springboot-service-482150591633.us-central1.run.app/api/users/login', { email, password });
       setCurrentUser(response.data);
       navigate('/dashboard');
     } catch (error) {
@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/users/register', userData);
+      const response = await axios.post('https://my-springboot-service-482150591633.us-central1.run.app/api/users/register', userData);
       setCurrentUser(response.data);
       navigate('/dashboard');
     } catch (error) {
