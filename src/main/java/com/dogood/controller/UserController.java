@@ -15,7 +15,7 @@ public class UserController {
     
     @GetMapping("/message")
     public String message() {
-    	return "We are there to contribute for doGood!";
+    	return "Hello, We are there to contribute for doGood!";
     }
     
     @PostMapping("/register")
