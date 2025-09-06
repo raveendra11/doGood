@@ -1,6 +1,6 @@
 package com.dogood.service;
 import com.dogood.dto.LoginRequest;
-import com.dogood.model.User;
+import com.dogood.model.Users;
 import com.dogood.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -14,22 +14,22 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public User registerUser(User user) {
-        System.out.println("Registering user: " + user);
-        return userRepository.save(user);
+    public Users registerUser(Users users) {
+        System.out.println("Registering users: " + users);
+        return userRepository.save(users);
     }
     
-    public User loginUser(LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail());
+    public Users loginUser(LoginRequest loginRequest) {
+        Users users = userRepository.findByEmail(loginRequest.getEmail());
         
-        if (user == null) {
+        if (users == null) {
             throw new RuntimeException("User not found");
         }
         
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
+        if (!users.getPassword().equals(loginRequest.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
         
-        return user;
+        return users;
     }
 }
