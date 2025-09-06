@@ -1,7 +1,7 @@
 package com.dogood.controller;
 
 import com.dogood.dto.LoginRequest;
-import com.dogood.model.User;
+import com.dogood.model.Users;
 import com.dogood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ public class UserController {
     }
     
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.registerUser(user);
+    public Users register(@RequestBody Users users) {
+        return userService.registerUser(users);
     }
     
     @PostMapping("/login")
-    public User login(@RequestBody LoginRequest loginRequest) {
+    public Users login(@RequestBody LoginRequest loginRequest) {
         return userService.loginUser(loginRequest);
     }
 }
