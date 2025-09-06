@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     	registry.addMapping("/**")
         .allowedOrigins(
             "http://localhost:3000", 
-            "https://my-springboot-service-482150591633.us-central1.run.app"
+            "https://dogood-web-1030922974196.europe-west1.run.app"
         )
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*")
