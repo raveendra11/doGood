@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         .allowedOrigins(
             "http://localhost:3000", 
             "https://dogood-web-1030922974196.europe-west1.run.app",
-            "https://wedogood.help"
+            "https://wedogood.help" 
         )
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*")
