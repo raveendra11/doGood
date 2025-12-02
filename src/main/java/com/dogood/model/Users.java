@@ -31,7 +31,7 @@ public class Users {
     private Role role;
 
     public enum Role {
-        DONOR, ADMIN, BENEFICIARY
+        DONOR, VOLUNTEER, BENEFICIARY
     }
 
 }
