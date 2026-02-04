@@ -17,7 +17,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
 
-
+#checking triggers
 # Use official OpenJDK runtime as base image
 #FROM openjdk:17-jdk-alpine
 
