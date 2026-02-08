@@ -20,14 +20,17 @@ public class Users {
     private String password;
 
     public String getPassword() {
-		return password;
-	}
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Enumerated(EnumType.STRING)
+    private String resetToken;
+    private java.time.LocalDateTime resetTokenExpiry;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public enum Role {
