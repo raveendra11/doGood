@@ -24,10 +24,11 @@ public class Users {
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
 
+    // Role stays where it was originally
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // Keeping these explicit as they were in the original code
+    // Explicit getters/setters kept as in original code
     public String getPassword() {
         return password;
     }
