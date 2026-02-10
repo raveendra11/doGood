@@ -2,12 +2,14 @@ package com.dogood.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,8 +19,15 @@ public class Users {
     @Column(unique = true)
     private String email;
 
+    // Auth-related fields
     private String password;
+    private String resetToken;
+    private LocalDateTime resetTokenExpiry;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    // Keeping these explicit as they were in the original code
     public String getPassword() {
         return password;
     }
@@ -27,14 +36,7 @@ public class Users {
         this.password = password;
     }
 
-    private String resetToken;
-    private java.time.LocalDateTime resetTokenExpiry;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     public enum Role {
         DONOR, VOLUNTEER, BENEFICIARY
     }
-
 }
