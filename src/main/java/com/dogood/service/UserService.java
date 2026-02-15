@@ -3,6 +3,7 @@ package com.dogood.service;
 import com.dogood.dto.ForgotPasswordRequest;
 import com.dogood.dto.LoginRequest;
 import com.dogood.dto.ResetPasswordRequest;
+import com.dogood.exception.UserNotFoundException;
 import com.dogood.model.Users;
 import com.dogood.repository.UserRepository;
 
@@ -40,7 +41,7 @@ public class UserService {
     public String forgotPassword(ForgotPasswordRequest request) {
         Users user = userRepository.findByEmail(request.getEmail());
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User with this email does not exist");
         }
 
         String token = java.util.UUID.randomUUID().toString();
