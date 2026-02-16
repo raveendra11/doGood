@@ -8,6 +8,9 @@ import com.dogood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -31,8 +34,12 @@ public class UserController {
     }
 
     @PostMapping("/forgot-password")
-    public String forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        return userService.forgotPassword(request);
+    public Map<String, String> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        String token = userService.forgotPassword(request);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return response;
     }
 
     @PostMapping("/reset-password")
