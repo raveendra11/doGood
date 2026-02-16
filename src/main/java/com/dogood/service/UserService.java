@@ -51,7 +51,7 @@ public class UserService {
 
         // In a real scenario, email would be sent here
         System.out.println("Reset token for " + user.getEmail() + ": " + token);
-        return "Reset token generated successfully";
+        return token;
     }
 
     @Transactional
