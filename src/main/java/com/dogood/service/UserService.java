@@ -10,7 +10,9 @@ import com.dogood.repository.UserRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
@@ -20,6 +22,8 @@ public class UserService {
     @Transactional
     public Users registerUser(Users users) {
         System.out.println("Registering users: " + users);
+        if(userRepository.existsByEmail(users.getEmail()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with email already exists");
         return userRepository.save(users);
     }
 
