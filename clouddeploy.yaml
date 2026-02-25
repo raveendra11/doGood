@@ -1,0 +1,15 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: dogood-pipeline
+serialPipeline:
+  stages:
+    - targetId: gke-prod
+
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: gke-prod
+gke:
+  cluster: projects/project-ef9bb6c2-2107-44b8-8d9/locations/us-central1/clusters/dogood-cluster
