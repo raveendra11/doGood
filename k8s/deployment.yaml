@@ -21,3 +21,7 @@ spec:
             requests:
               cpu: "500m"
               memory: "512Mi"
+              
+envFrom:
+  - secretRef:
+      name: dogood-db-secret              
