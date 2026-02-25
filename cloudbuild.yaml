@@ -11,6 +11,17 @@ steps:
       - push
       - 'us-central1-docker.pkg.dev/$PROJECT_ID/dogood-repo/dogood:$SHORT_SHA'
 
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - deploy
+      - releases
+      - create
+      - "release-$SHORT_SHA"
+      - "--delivery-pipeline=dogood-pipeline"
+      - "--region=us-central1"
+      - "--images=dogood=us-central1-docker.pkg.dev/$PROJECT_ID/dogood-repo/dogood:$SHORT_SHA"
+
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/dogood-repo/dogood:$SHORT_SHA'
 
