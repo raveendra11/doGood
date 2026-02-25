@@ -14,7 +14,7 @@ steps:
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/dogood-repo/dogood:$SHORT_SHA'
 
-
+#To check triggers.
 #options:
 #  logging: CLOUD_LOGGING_ONLY
 #  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
