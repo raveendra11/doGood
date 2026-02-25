@@ -14,14 +14,13 @@ spec:
     spec:
       containers:
         - name: dogood
-          image: dogood   # Cloud Deploy will replace this
+          image: dogood   # Cloud Deploy replaces this
           ports:
             - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: dogood-db-secret
           resources:
             requests:
               cpu: "500m"
               memory: "512Mi"
-              
-envFrom:
-  - secretRef:
-      name: dogood-db-secret              
