@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dogood-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dogood
+  template:
+    metadata:
+      labels:
+        app: dogood
+    spec:
+      containers:
+        - name: dogood
+          image: dogood   # Cloud Deploy will replace this
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
