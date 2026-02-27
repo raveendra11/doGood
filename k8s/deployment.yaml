@@ -5,60 +5,42 @@ metadata:
   labels:
     app: dogood
 spec:
-  replicas: 2
-
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
-
+  replicas: 1
   selector:
     matchLabels:
       app: dogood
-
   template:
     metadata:
       labels:
         app: dogood
-
     spec:
       containers:
         - name: dogood
-          image: dogood   # Cloud Deploy replaces this with Artifact Registry image
-
+          image: dogood
           ports:
             - containerPort: 8080
-
           envFrom:
             - secretRef:
                 name: dogood-db-secret
-
           resources:
             requests:
-              cpu: "500m"
+              cpu: "250m"
               memory: "512Mi"
             limits:
-              cpu: "1"
+              cpu: "500m"
               memory: "1Gi"
-
           readinessProbe:
             httpGet:
-              path: /
+              path: /api/message
               port: 8080
             initialDelaySeconds: 45
             periodSeconds: 10
-            failureThreshold: 5
-            timeoutSeconds: 3
-
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/message
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 15
-            failureThreshold: 5
-            timeoutSeconds: 3
 
 
             
