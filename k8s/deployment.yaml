@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: dogood-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: dogood
@@ -14,12 +14,9 @@ spec:
     spec:
       containers:
         - name: dogood
-          image: dogood   # Cloud Deploy replaces this
+          image: dogood
           ports:
-           - containerPort: 8080
-          envFrom:
-            - secretRef:
-                name: dogood-db-secret
+            - containerPort: 8080
           resources:
             requests:
               cpu: "500m"
