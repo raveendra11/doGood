@@ -3,7 +3,7 @@ steps:
     args:
       - build
       - '-t'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/dogood-repo/dogood:$SHORT_SHA'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/dogood:$SHORT_SHA'
       - '.'
 
   - name: 'gcr.io/cloud-builders/docker'
