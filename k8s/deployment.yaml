@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dogood-app
+  name: dogood
+  labels:
+    app: dogood
 spec:
   replicas: 1
   selector:
@@ -14,10 +16,9 @@ spec:
     spec:
       containers:
         - name: dogood
-          image: dogood
+          image: us-central1-docker.pkg.dev/dogood-488720/dogood-repo/dogood:ab3f131
           ports:
             - containerPort: 8080
-          resources:
-            requests:
-              cpu: "500m"
-              memory: "512Mi"
+          envFrom:
+            - secretRef:
+                name: dogood-db-secret
