@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dogood-app
-  labels:
-    app: dogood
 spec:
   replicas: 1
   selector:
@@ -16,57 +14,13 @@ spec:
     spec:
       containers:
         - name: dogood
-          image: dogood
+          image: dogood   # Cloud Deploy replaces this
           ports:
-            - containerPort: 8080
+           - containerPort: 8080
           envFrom:
             - secretRef:
                 name: dogood-db-secret
           resources:
             requests:
-              cpu: "250m"
-              memory: "512Mi"
-            limits:
               cpu: "500m"
-              memory: "1Gi"
-          readinessProbe:
-            httpGet:
-              path: /api/message
-              port: 8080
-            initialDelaySeconds: 45
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /api/message
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 15
-
-
-            
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: dogood-app
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: dogood
-#  template:
-#    metadata:
-#      labels:
-#        app: dogood
-#    spec:
-#      containers:
-#        - name: dogood
-#          image: dogood   # Cloud Deploy replaces this
-#          ports:
-#           - containerPort: 8080
-#          envFrom:
-#            - secretRef:
-#                name: dogood-db-secret
-#          resources:
-#            requests:
-#              cpu: "500m"
-#              memory: "512Mi"
+              memory: "512Mi"
