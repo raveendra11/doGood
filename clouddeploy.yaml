@@ -13,3 +13,8 @@ metadata:
   name: gke-prod
 gke:
   cluster: projects/dogood-488720/locations/us-central1/clusters/dogood-cluster
+executionConfigs:
+- usages:
+  - RENDER
+  - DEPLOY
+  serviceAccount: dogood-deploy@dogood-488720.iam.gserviceaccount.com
