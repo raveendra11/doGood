@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dogood
-          image: us-central1-docker.pkg.dev/dogood-488720/dogood-repo/dogood:ab3f131
+          image: us-central1-docker.pkg.dev/dogood-488720/dogood-repo/dogood
           ports:
             - containerPort: 8080
           envFrom:
