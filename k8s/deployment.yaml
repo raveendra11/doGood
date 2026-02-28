@@ -16,9 +16,19 @@ spec:
     spec:
       containers:
         - name: dogood
-          image: us-central1-docker.pkg.dev/dogood-488720/dogood-repo/dogood:ab3f131
+          image: us-central1-docker.pkg.dev/dogood-488720/dogood-repo/dogood
           ports:
             - containerPort: 8080
           envFrom:
             - secretRef:
                 name: dogood-db-secret
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 20
