@@ -9,5 +9,5 @@ spec:
     healthyThreshold: 1
     unhealthyThreshold: 2
     type: HTTP
-    requestPath: /actuator/health
+    requestPath: /api/message
     port: 8080
