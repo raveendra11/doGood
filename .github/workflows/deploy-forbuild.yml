@@ -1,10 +1,9 @@
-name: Build and Deploy Directly to GKE
+name: Build and Deploy to GKE via Cloud Deploy
 
 on:
   push:
     branches:
       - master
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,14 +12,13 @@ permissions:
 env:
   PROJECT_ID: dogood-488720
   REGION: us-central1
-  CLUSTER_NAME: dogood-cluster
   REPOSITORY: dogood-repo
   IMAGE_NAME: dogood
+  DELIVERY_PIPELINE: dogood-pipeline
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout
@@ -53,25 +51,9 @@ jobs:
           docker push \
             ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}
 
-      - name: Get GKE credentials
-        uses: google-github-actions/get-gke-credentials@v3
-        with:
-          cluster_name: ${{ env.CLUSTER_NAME }}
-          location: ${{ env.REGION }}
-          project_id: ${{ env.PROJECT_ID }}
-
-      - name: Deploy manifests
+      - name: Create Cloud Deploy release
         run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/backendconfig.yaml
-          kubectl apply -f k8s/service.yaml
-          kubectl apply -f k8s/ingress.yaml
-
-      - name: Update deployment image
-        run: |
-          kubectl set image deployment/dogood \
-            dogood=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}
-
-      - name: Wait for rollout
-        run: |
-          kubectl rollout status deployment/dogood --timeout=600s
+          gcloud deploy releases create release-${{ steps.vars.outputs.tag }} \
+            --delivery-pipeline=${DELIVERY_PIPELINE} \
+            --region=${REGION} \
+            --images=${IMAGE_NAME}=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}
