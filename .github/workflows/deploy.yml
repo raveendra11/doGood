@@ -74,4 +74,4 @@ jobs:
 
       - name: Wait for rollout
         run: |
-          kubectl rollout status deployment/dogood --timeout=300s
+          kubectl rollout status deployment/dogood --timeout=600s
