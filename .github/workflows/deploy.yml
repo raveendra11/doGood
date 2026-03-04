@@ -42,17 +42,16 @@ jobs:
         id: vars
         run: echo "tag=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
-      - name: Set image URI
-        id: image
-        run: echo "uri=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}" >> "$GITHUB_OUTPUT"
-
       - name: Build image
         run: |
-          docker build -t "${{ steps.image.outputs.uri }}" .
+          docker build \
+            -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }} \
+            .
 
       - name: Push image
         run: |
-          docker push "${{ steps.image.outputs.uri }}"
+          docker push \
+            ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}
 
       - name: Get GKE credentials
         uses: google-github-actions/get-gke-credentials@v3
@@ -61,16 +60,17 @@ jobs:
           location: ${{ env.REGION }}
           project_id: ${{ env.PROJECT_ID }}
 
-      - name: Render deployment manifest with real image
-        run: |
-          sed "s|image: dogood|image: ${{ steps.image.outputs.uri }}|g" k8s/deployment.yaml > k8s/deployment.rendered.yaml
-
       - name: Deploy manifests
         run: |
-          kubectl apply -f k8s/deployment.rendered.yaml
+          kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/backendconfig.yaml
           kubectl apply -f k8s/service.yaml
           kubectl apply -f k8s/ingress.yaml
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/dogood \
+            dogood=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}
 
       - name: Wait for rollout
         run: |
