@@ -4,16 +4,9 @@ metadata:
   name: dogood-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: "dogood-cert"
 spec:
-  rules:
-    - host: api.wedogood.help
-      http:
-        paths:
-          - path: /*
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: dogood-service
-                port:
-                  number: 80
+  defaultBackend:
+    service:
+      name: dogood-service
+      port:
+        number: 80
