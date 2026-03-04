@@ -10,9 +10,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
     	registry.addMapping("/**")
         .allowedOrigins(
-            "http://localhost:3000", 
-            "https://dogood-web-23738934914.us-central1.run.app",
-            "https://wedogood.help" 
+            "http://localhost:3000", //Local
+            "https://dogood-web-23738934914.us-central1.run.app", //Cloud run
+            "https://wedogood.help" //domain-map
+            "https://34.128.167.227" //GKE
         )
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*")
