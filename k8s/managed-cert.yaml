@@ -4,4 +4,4 @@ metadata:
   name: dogood-cert
 spec:
   domains:
-    - wedogood.help
+    - api.wedogood.help
