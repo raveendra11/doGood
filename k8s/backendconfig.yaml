@@ -10,16 +10,4 @@ spec:
     unhealthyThreshold: 2
     type: HTTP
     requestPath: /api/message
-    port: 8080apiVersion: cloud.google.com/v1
-kind: BackendConfig
-metadata:
-  name: dogood-backendconfig
-spec:
-  healthCheck:
-    checkIntervalSec: 15
-    timeoutSec: 5
-    healthyThreshold: 1
-    unhealthyThreshold: 2
-    type: HTTP
-    requestPath: /api/message
     port: 8080
