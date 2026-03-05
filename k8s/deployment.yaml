@@ -6,11 +6,6 @@ metadata:
     app: dogood
 spec:
   replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
   selector:
     matchLabels:
       app: dogood
@@ -19,7 +14,6 @@ spec:
       labels:
         app: dogood
     spec:
-      terminationGracePeriodSeconds: 30
       containers:
         - name: dogood
           image: dogood
@@ -28,13 +22,6 @@ spec:
           envFrom:
             - secretRef:
                 name: dogood-db-secret
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "128Mi"
-            limits:
-              cpu: "250m"
-              memory: "512Mi"
           readinessProbe:
             tcpSocket:
               port: 8080
