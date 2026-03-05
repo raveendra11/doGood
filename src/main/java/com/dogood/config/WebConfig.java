@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
             "http://localhost:3000",
             "https://dogood-web-23738934914.us-central1.run.app",
             "https://wedogood.help", 
-            "https://34.128.167.227"
+            "https://34.128.167.227/*"
         )
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*")
