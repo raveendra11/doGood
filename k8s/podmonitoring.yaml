@@ -1,0 +1,13 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: dogood-backend
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: dogood
+  endpoints:
+  - port: 8080
+    path: /actuator/prometheus
+    interval: 15s
