@@ -9,14 +9,14 @@ The project is currently under active development, with a focus on building a sc
 
 ##  Current Status
 
-🚧 **Under Active Development**
+ **Under Active Development**
 
 The application is being actively developed and improved across backend, frontend, database, and cloud infrastructure.
 Current efforts are focused on strengthening the platform architecture, deployment automation, and production readiness.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Application
 
@@ -36,7 +36,7 @@ Current efforts are focused on strengthening the platform architecture, deployme
 
 ---
 
-## 🏗 Architecture Overview
+## Architecture Overview
 
 The project is being designed as a cloud-native application with separate frontend and backend deployment paths.
 
@@ -52,7 +52,7 @@ The project is being designed as a cloud-native application with separate fronte
 
 ---
 
-## ⚙️ DevOps & Cloud Work Showcase
+## DevOps & Cloud Work Showcase
 
 As part of this project, significant work has been done around deployment automation, Kubernetes, cloud networking, and secure CI/CD integration.
 
@@ -126,7 +126,7 @@ As part of this project, significant work has been done around deployment automa
 
 ---
 
-## 📦 Key Features in Progress
+## Key Features in Progress
 
 * User-friendly donation workflow
 * Request and donation management
@@ -138,7 +138,7 @@ As part of this project, significant work has been done around deployment automa
 
 ---
 
-## 🚀 Learning Outcomes Through This Project
+## Learning Outcomes Through This Project
 
 This project is not only about building a charity platform, but also about applying real-world cloud and DevOps practices, including:
 
