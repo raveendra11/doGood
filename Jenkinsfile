@@ -1,14 +1,22 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
     environment {
         PROJECT_ID   = 'dogood-488720'
         REGION       = 'us-central1'
         CLUSTER_NAME = 'dogood-cluster'
         REPOSITORY   = 'dogood-repo'
         IMAGE_NAME   = 'dogood'
-        IMAGE_TAG    = "${env.BUILD_NUMBER}"
-        IMAGE_URI    = "${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
+        GCP_KEY_FILE = credentials('gcp-sa-key')
     }
 
     stages {
@@ -18,31 +26,38 @@ pipeline {
             }
         }
 
-        stage('Authenticate to GCP') {
+        stage('Set Image Tag') {
             steps {
-                withCredentials([file(credentialsId: 'gcp-service-account-json', variable: 'GCP_KEY')]) {
-                    sh '''
-                        gcloud auth activate-service-account --key-file="$GCP_KEY"
-                        gcloud config set project "$PROJECT_ID"
-                        gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
-                    '''
+                script {
+                    env.TAG = sh(
+                        script: 'git rev-parse --short=7 HEAD',
+                        returnStdout: true
+                    ).trim()
+                    env.FULL_IMAGE = "${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${TAG}"
+                    echo "Using image: ${env.FULL_IMAGE}"
                 }
+            }
+        }
+
+        stage('Authenticate to Google Cloud') {
+            steps {
+                sh '''
+                    gcloud auth activate-service-account --key-file="$GCP_KEY_FILE"
+                    gcloud config set project "$PROJECT_ID"
+                    gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
+                '''
             }
         }
 
         stage('Build Image') {
             steps {
-                sh '''
-                    docker build -t "$IMAGE_URI" .
-                '''
+                sh 'docker build -t "$FULL_IMAGE" .'
             }
         }
 
         stage('Push Image') {
             steps {
-                sh '''
-                    docker push "$IMAGE_URI"
-                '''
+                sh 'docker push "$FULL_IMAGE"'
             }
         }
 
@@ -62,6 +77,7 @@ pipeline {
                     kubectl apply -f k8s/deployment.yaml
                     kubectl apply -f k8s/backendconfig.yaml
                     kubectl apply -f k8s/service.yaml
+                    kubectl apply -f k8s/podmonitoring.yaml
                     kubectl apply -f k8s/ingress.yaml
                 '''
             }
@@ -71,29 +87,27 @@ pipeline {
             steps {
                 sh '''
                     kubectl set image deployment/dogood \
-                      dogood="$IMAGE_URI"
+                      dogood="$FULL_IMAGE"
                 '''
             }
         }
 
         stage('Wait for Rollout') {
             steps {
-                sh '''
-                    kubectl rollout status deployment/dogood --timeout=600s
-                '''
+                sh 'kubectl rollout status deployment/dogood --timeout=600s'
             }
         }
     }
 
     post {
         success {
-            echo "Deployment succeeded: ${IMAGE_URI}"
+            echo 'Build and deployment completed successfully.'
         }
         failure {
-            echo "Deployment failed"
+            echo 'Build or deployment failed.'
         }
         always {
-            sh 'docker logout ${REGION}-docker.pkg.dev || true'
+            sh 'docker image prune -f || true'
         }
     }
 }
