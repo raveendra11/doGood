@@ -16,7 +16,6 @@ pipeline {
         CLUSTER_NAME = 'dogood-cluster'
         REPOSITORY   = 'dogood-repo'
         IMAGE_NAME   = 'dogood'
-        GCP_KEY_FILE = credentials('gcp-sa-key')
     }
 
     stages {
