@@ -10,4 +10,8 @@ class DoGoodApplicationTests {
 	void contextLoads() {
 	}
 
+	void printHello(){
+	System.out.println("Welcome!");
+	}
+
 }
