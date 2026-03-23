@@ -41,7 +41,6 @@ pipeline {
         stage('Authenticate to Google Cloud') {
             steps {
                 sh '''
-                    gcloud auth activate-service-account --key-file="$GCP_KEY_FILE"
                     gcloud config set project "$PROJECT_ID"
                     gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
                 '''
