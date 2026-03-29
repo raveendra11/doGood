@@ -1,0 +1,71 @@
+name: Build and Update GitOps Repo
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  PROJECT_ID: dogood-488720
+  REGION: us-central1
+  REPOSITORY: dogood-repo
+  IMAGE_NAME: dogood
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
+
+      - name: Set image tag
+        id: vars
+        run: echo "tag=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Build image
+        run: |
+          docker build \
+            -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }} \
+            .
+
+      - name: Push image
+        run: |
+          docker push \
+            ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}
+
+      # 👇 NEW: GitOps update
+      - name: Clone GitOps repo
+        run: |
+          git clone https://x-access-token:${{ secrets.GITOPS_REPO_TOKEN }}@github.com/raveendra11/dogood-gitops.git
+
+      - name: Update image tag in GitOps repo
+        run: |
+          cd dogood-gitops/apps/dogood/overlays/prod
+          sed -i "s/newTag:.*/newTag: ${{ steps.vars.outputs.tag }}/" kustomization.yaml
+
+      - name: Commit and push
+        run: |
+          cd dogood-gitops
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Update image to ${{ steps.vars.outputs.tag }}" || exit 0
+          git push
