@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    private static final int SESSION_TIMEOUT_SECONDS = 5 * 60;
+    private static final int SESSION_TIMEOUT_SECONDS = 300; // 5 minutes
 
     @Autowired
     private UserService userService;
