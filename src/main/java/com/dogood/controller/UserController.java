@@ -5,6 +5,8 @@ import com.dogood.dto.LoginRequest;
 import com.dogood.dto.ResetPasswordRequest;
 import com.dogood.model.Users;
 import com.dogood.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +31,22 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Users login(@RequestBody LoginRequest loginRequest) {
-        return userService.loginUser(loginRequest);
+    public Users login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+        Users user = userService.loginUser(loginRequest);
+        HttpSession session = request.getSession(true);
+        session.setAttribute("loggedInUserId", user.getId());
+        session.setMaxInactiveInterval(5 * 60);
+        return user;
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+            return "Logged out successfully";
+        }
+        return "No active session";
     }
 
     @PostMapping("/forgot-password")
