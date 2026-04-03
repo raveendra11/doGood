@@ -3,7 +3,6 @@ package com.dogood.controller;
 import com.dogood.dto.LoginRequest;
 import com.dogood.model.Users;
 import com.dogood.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,9 +26,6 @@ class UserControllerSessionTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @MockBean
     private UserService userService;
