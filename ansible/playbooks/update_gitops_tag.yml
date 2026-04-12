@@ -15,5 +15,6 @@
     - name: Update newTag value
       ansible.builtin.lineinfile:
         path: "{{ gitops_file }}"
-        regexp: '^\s*newTag:.*$'
-        line: "newTag: {{ image_tag }}"
+        regexp: '^(\s*)newTag:.*$'
+        line: '\1newTag: {{ image_tag }}'
+        backrefs: true

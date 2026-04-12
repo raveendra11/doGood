@@ -22,14 +22,28 @@
           - container_name | length > 0
 
     - name: Apply Kubernetes manifests
-      ansible.builtin.command: kubectl apply -f {{ item }}
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - apply
+          - -f
+          - "{{ item }}"
       loop: "{{ manifests }}"
 
     - name: Update deployment image
-      ansible.builtin.command: >
-        kubectl set image deployment/{{ deployment_name }}
-        {{ container_name }}={{ full_image }}
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - set
+          - image
+          - "deployment/{{ deployment_name }}"
+          - "{{ container_name }}={{ full_image }}"
 
     - name: Wait for deployment rollout
-      ansible.builtin.command: >
-        kubectl rollout status deployment/{{ deployment_name }} --timeout={{ rollout_timeout | default('600s') }}
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - rollout
+          - status
+          - "deployment/{{ deployment_name }}"
+          - "--timeout={{ rollout_timeout | default('600s') }}"
