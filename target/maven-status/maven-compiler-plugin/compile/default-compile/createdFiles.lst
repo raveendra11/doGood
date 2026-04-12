@@ -1,9 +1,7 @@
-com\dogood\DoGoodApplication.class
-com\dogood\dto\RegisterRequest.class
-com\dogood\repository\UserRepository.class
-com\dogood\config\WebConfig.class
-com\dogood\model\User$Role.class
-com\dogood\controller\UserController.class
-com\dogood\model\User.class
-com\dogood\service\UserService.class
-com\dogood\dto\LoginRequest.class
+com/dogood/model/Users.class
+com/dogood/dto/ResetPasswordRequest.class
+com/dogood/model/Users$Role.class
+com/dogood/exception/UserNotFoundException.class
+com/dogood/dto/ForgotPasswordRequest.class
+com/dogood/exception/ErrorResponse.class
+com/dogood/exception/GlobalExceptionHandler.class
