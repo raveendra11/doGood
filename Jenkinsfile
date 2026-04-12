@@ -47,6 +47,12 @@ pipeline {
             }
         }
 
+        stage('Install Ansible') {
+            steps {
+                sh 'python3 -m pip install --user ansible'
+            }
+        }
+
         stage('Build Image') {
             steps {
                 sh 'docker build -t "$FULL_IMAGE" .'
@@ -69,30 +75,14 @@ pipeline {
             }
         }
 
-        stage('Deploy Manifests') {
+        stage('Deploy and Configure with Ansible') {
             steps {
                 sh '''
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/backendconfig.yaml
-                    kubectl apply -f k8s/service.yaml
-                    kubectl apply -f k8s/podmonitoring.yaml
-                    kubectl apply -f k8s/ingress.yaml
+                    ~/.local/bin/ansible-playbook ansible/playbooks/deploy_gke.yml \
+                      -e "full_image=$FULL_IMAGE" \
+                      -e "deployment_name=dogood" \
+                      -e "container_name=dogood"
                 '''
-            }
-        }
-
-        stage('Update Deployment Image') {
-            steps {
-                sh '''
-                    kubectl set image deployment/dogood \
-                      dogood="$FULL_IMAGE"
-                '''
-            }
-        }
-
-        stage('Wait for Rollout') {
-            steps {
-                sh 'kubectl rollout status deployment/dogood --timeout=600s'
             }
         }
     }
