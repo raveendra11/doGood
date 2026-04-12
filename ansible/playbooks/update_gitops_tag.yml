@@ -1,0 +1,20 @@
+---
+- name: Update image tag in GitOps kustomization
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Ensure required variables are set
+      ansible.builtin.assert:
+        that:
+          - gitops_file is defined
+          - gitops_file | length > 0
+          - image_tag is defined
+          - image_tag | length > 0
+
+    - name: Update newTag value
+      ansible.builtin.lineinfile:
+        path: "{{ gitops_file }}"
+        regexp: '^(\s*)newTag:.*$'
+        line: '\1newTag: {{ image_tag }}'
+        backrefs: true

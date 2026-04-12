@@ -35,6 +35,9 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Install Ansible
+        run: python3 -m pip install --user ansible
+
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
 
@@ -60,19 +63,9 @@ jobs:
           location: ${{ env.REGION }}
           project_id: ${{ env.PROJECT_ID }}
 
-      - name: Deploy manifests
+      - name: Deploy and configure with Ansible
         run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/backendconfig.yaml
-          kubectl apply -f k8s/service.yaml
-          kubectl apply -f k8s/podmonitoring.yaml
-          kubectl apply -f k8s/ingress.yaml
-
-      - name: Update deployment image
-        run: |
-          kubectl set image deployment/dogood \
-            dogood=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}
-
-      - name: Wait for rollout
-        run: |
-          kubectl rollout status deployment/dogood --timeout=600s
+          ~/.local/bin/ansible-playbook ansible/playbooks/deploy_gke.yml \
+            -e "full_image=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ steps.vars.outputs.tag }}" \
+            -e "deployment_name=dogood" \
+            -e "container_name=dogood"

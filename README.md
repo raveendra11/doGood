@@ -29,6 +29,7 @@ Current efforts are focused on strengthening the platform architecture, deployme
 * **Cloud Platform:** Google Cloud Platform (GCP)
 * **Containerization:** Docker
 * **CI/CD:** GitHub Actions, Cloud Deploy, Jenkins (explored)
+* **Configuration Management:** Ansible
 * **Container Registry:** Google Artifact Registry
 * **Orchestration & Deployment:** GKE, Cloud Run
 * **Ingress & Traffic Management:** Kubernetes Ingress, Google Cloud HTTP(S) Load Balancer
@@ -77,6 +78,7 @@ As part of this project, significant work has been done around deployment automa
 * Configured deployment pipelines for releasing application updates to GKE
 * Used **image substitution workflows** for Kubernetes deployments
 * Automated rollout flow from source code changes to Kubernetes deployment
+* Standardized deployment/configuration execution through Ansible playbooks
 
 ###  Direct GKE Deployment
 

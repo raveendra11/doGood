@@ -1,11 +1,5 @@
-**Google Cloud**: <br> 
+**Ansible playbook commands**: <br>
 
-**gcloud config set project [PROJECT_ID]`** to change to a different project.
+**ansible-playbook ansible/playbooks/deploy_gke.yml -e "full_image=[IMAGE]" -e "deployment_name=dogood" -e "container_name=dogood" [-e "rollout_timeout=600s"]** to apply Kubernetes manifests, update image, and wait for rollout.
 
-**gcloud compute instances list** to Lists all VM instances
-
-**gcloud compute instances create VM_NAME** to Creates a new virtual machine
-
-**gcloud compute ssh VM_NAME** to Connects to VM via SSH
-
-**gcloud compute instances delete VM_NAME** to Deletes a VM instance
+**ansible-playbook ansible/playbooks/update_gitops_tag.yml -e "gitops_file=[PATH_TO_KUSTOMIZATION]" -e "image_tag=[TAG]"** to update GitOps image tag configuration.
