@@ -47,3 +47,4 @@
           - status
           - "deployment/{{ deployment_name }}"
           - "--timeout={{ rollout_timeout | default('600s') }}"
+      changed_when: false
