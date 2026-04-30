@@ -74,6 +74,7 @@ pipeline {
                 sh '''
                     kubectl apply -f k8s/deployment.yaml
                     kubectl apply -f k8s/backendconfig.yaml
+                    kubectl apply -f k8s/managed-cert.yaml
                     kubectl apply -f k8s/service.yaml
                     kubectl apply -f k8s/podmonitoring.yaml
                     kubectl apply -f k8s/ingress.yaml
